@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             GamePlanetTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    NavHost(navController = navController, startDestination = Screens.Login.route) {
+                    NavHost(navController = navController, startDestination = Screens.Home.route) {
                         composable(route = Screens.Login.route){
                             LoginScreen(innerPadding)
                         }
