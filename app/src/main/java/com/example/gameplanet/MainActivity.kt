@@ -12,9 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.gameplanet.ui.screens.DetalleGameScreen
 import com.example.gameplanet.ui.screens.HomeScreen
 import com.example.gameplanet.ui.screens.LoginScreen
 import com.example.gameplanet.ui.screens.RegistroScreen
@@ -37,7 +40,17 @@ class MainActivity : ComponentActivity() {
                             RegistroScreen(innerPadding)
                         }
                         composable(route = Screens.Home.route){
-                            HomeScreen(innerPadding)
+                            HomeScreen(innerPadding, navController)
+                        }
+                        composable(
+                            route = Screens.DetalleGame.route+"/{idGame}",
+                            arguments = listOf(navArgument("idGame"){
+                                type = NavType.IntType
+                                nullable = false
+                            })
+                        ){
+                            val idGame = it.arguments?.getInt("idGame") ?: 0
+                            DetalleGameScreen(innerPadding, idGame)
                         }
                     }
                 }

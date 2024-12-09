@@ -38,16 +38,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.gameplanet.R
 import com.example.gameplanet.models.Game
 import com.example.gameplanet.services.GameService
+import com.example.gameplanet.utils.Screens
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Composable
-fun HomeScreen(innerPadding: PaddingValues){
+fun HomeScreen(innerPadding: PaddingValues, navController: NavController){
     var games by remember {
         mutableStateOf(listOf<Game>())
     }
@@ -57,7 +59,7 @@ fun HomeScreen(innerPadding: PaddingValues){
     val scope = rememberCoroutineScope()
     LaunchedEffect(key1 = true){
         scope.launch {
-            val BASE_URL = "http://157.230.89.111/"
+            val BASE_URL = "http://157.230.89.111:8000/"
             val gameService = Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -89,14 +91,14 @@ fun HomeScreen(innerPadding: PaddingValues){
             verticalArrangement = Arrangement.Center
         ){
             Text(
-                text = "EXPLORA TODO NUESTRO VIDEOJUEGOS",
-                modifier = Modifier.fillMaxWidth().padding(top = 25.dp, start = 20.dp, end = 20.dp),
+                text = "EXPLORA TODOS NUESTROS VIDEOJUEGOS",
+                modifier = Modifier.fillMaxWidth().padding(top = 25.dp, start = 20.dp, end = 20.dp, bottom = 15.dp,),
                 fontWeight = FontWeight.Bold,
-                fontSize = 30.sp
+                fontSize = 30.sp,
+                textAlign = TextAlign.Center
             )
             LazyVerticalGrid(
                 modifier = Modifier
-                    .padding(innerPadding)
                     .fillMaxSize()
                     .background(Color(0xFFF5F5F5)), // Fondo general
                 columns = GridCells.Fixed(2),
@@ -107,7 +109,8 @@ fun HomeScreen(innerPadding: PaddingValues){
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
-                            .height(170.dp),
+                            .height(170.dp)
+                            .clickable { navController.navigate(Screens.DetalleGame.route+"/${game.id}") },
                         shape = RoundedCornerShape(16.dp), // Bordes redondeados
                     ) {
                         Column(
