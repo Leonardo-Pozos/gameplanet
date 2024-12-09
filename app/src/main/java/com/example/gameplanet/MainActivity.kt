@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
                             LoginScreen(innerPadding, navController)
                         }
                         composable(route = Screens.Registro.route){
-                            RegistroScreen(innerPadding)
+                            RegistroScreen(innerPadding, navController)
                         }
                         composable(route = Screens.Home.route){
                             HomeScreen(innerPadding, navController)

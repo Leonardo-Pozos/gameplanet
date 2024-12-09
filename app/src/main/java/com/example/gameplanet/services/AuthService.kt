@@ -2,6 +2,7 @@ package com.example.gameplanet.services
 
 import com.example.gameplanet.models.Auth
 import com.example.gameplanet.models.AuthResponse
+import com.example.gameplanet.models.UserCreated
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Field
@@ -20,4 +21,7 @@ interface AuthService {
         @Field("client_id") clientId: String = "",
         @Field("client_secret") clientSecret: String = ""
     ) : Response<AuthResponse>
+
+    @POST("register")
+    suspend fun createUser(@Body auth: Auth) : Response<UserCreated>
 }

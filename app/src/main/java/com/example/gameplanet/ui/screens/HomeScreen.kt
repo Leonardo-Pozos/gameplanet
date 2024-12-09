@@ -59,7 +59,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 @Composable
 fun HomeScreen(innerPadding: PaddingValues, navController: NavController){
     val sharedPreference = SharedPreference(LocalContext.current)
-    val name = sharedPreference.getUserNameSharedPref()
+    val name = sharedPreference.getUserNameSharedPref() ?: ""
     var games by remember {
         mutableStateOf(listOf<Game>())
     }
@@ -79,9 +79,8 @@ fun HomeScreen(innerPadding: PaddingValues, navController: NavController){
                 val response = gameService.getGames()
                 isLoading = false
                 games = response
-                Log.i("Responsess", response.toString())
             } catch (e: Exception) {
-                Log.e("Errorr", e.toString())
+                Log.e("Error", e.toString())
             }
         }
     }
@@ -110,7 +109,7 @@ fun HomeScreen(innerPadding: PaddingValues, navController: NavController){
             ){
                 Icon(
                     imageVector = Earth,
-                    contentDescription = "Logout",
+                    contentDescription = "Earth",
                     modifier = Modifier.size(60.dp).weight(1f)
                 )
                 Column(
@@ -121,14 +120,12 @@ fun HomeScreen(innerPadding: PaddingValues, navController: NavController){
                         text = "Bienvenido",
                         style = MaterialTheme.typography.titleLarge
                     )
-                    if (name != null) {
-                        Text(
-                            text = name,
-                            color = Color.Gray,
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.padding(top = 3.dp, start = 10.dp)
-                        )
-                    }
+                    Text(
+                        text = name,
+                        color = Color.Gray,
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(top = 3.dp, start = 10.dp)
+                    )
                 }
                 IconButton(onClick = {
                     sharedPreference.removeUserSheredPref()
