@@ -7,17 +7,21 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -43,13 +48,18 @@ import coil.compose.AsyncImage
 import com.example.gameplanet.R
 import com.example.gameplanet.models.Game
 import com.example.gameplanet.services.GameService
+import com.example.gameplanet.utils.Earth
+import com.example.gameplanet.utils.Logout
 import com.example.gameplanet.utils.Screens
+import com.example.gameplanet.utils.SharedPreference
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Composable
 fun HomeScreen(innerPadding: PaddingValues, navController: NavController){
+    val sharedPreference = SharedPreference(LocalContext.current)
+    val name = sharedPreference.getUserNameSharedPref()
     var games by remember {
         mutableStateOf(listOf<Game>())
     }
@@ -86,16 +96,60 @@ fun HomeScreen(innerPadding: PaddingValues, navController: NavController){
         }
     }else{
         Column(
-            modifier = Modifier.fillMaxSize().padding(innerPadding),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ){
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 15.dp, vertical = 15.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Icon(
+                    imageVector = Earth,
+                    contentDescription = "Logout",
+                    modifier = Modifier.size(60.dp).weight(1f)
+                )
+                Column(
+                    modifier = Modifier.weight(3f),
+                    verticalArrangement = Arrangement.Center
+                ){
+                    Text(
+                        text = "Bienvenido",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    if (name != null) {
+                        Text(
+                            text = name,
+                            color = Color.Gray,
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(top = 3.dp, start = 10.dp)
+                        )
+                    }
+                }
+                IconButton(onClick = {
+                    sharedPreference.removeUserSheredPref()
+                    navController.navigate(Screens.Login.route){
+                        popUpTo(Screens.Login.route) { inclusive = true }
+                    }
+                }) {
+                    Icon(
+                        imageVector = Logout,
+                        contentDescription = "Logout",
+                        modifier = Modifier.size(30.dp).weight(1f)
+                    )
+                }
+            }
             Text(
                 text = "EXPLORA TODOS NUESTROS VIDEOJUEGOS",
-                modifier = Modifier.fillMaxWidth().padding(top = 25.dp, start = 20.dp, end = 20.dp, bottom = 15.dp,),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 15.dp, start = 20.dp, end = 20.dp, bottom = 15.dp,),
                 fontWeight = FontWeight.Bold,
-                fontSize = 30.sp,
-                textAlign = TextAlign.Center
+                fontSize = 25.sp,
             )
             LazyVerticalGrid(
                 modifier = Modifier
@@ -110,7 +164,7 @@ fun HomeScreen(innerPadding: PaddingValues, navController: NavController){
                             .fillMaxWidth()
                             .padding(8.dp)
                             .height(170.dp)
-                            .clickable { navController.navigate(Screens.DetalleGame.route+"/${game.id}") },
+                            .clickable { navController.navigate(Screens.DetalleGame.route + "/${game.id}") },
                         shape = RoundedCornerShape(16.dp), // Bordes redondeados
                     ) {
                         Column(
