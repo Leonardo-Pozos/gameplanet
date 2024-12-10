@@ -70,4 +70,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation("androidx.compose.ui:ui:1.5.0")
+    implementation("androidx.compose.material3:material3:1.0.0")  // o la versión más reciente
+    implementation("androidx.compose.material:material-icons-extended:1.4.3")
 }
