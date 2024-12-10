@@ -6,5 +6,6 @@ data class Game(
     val id: Int,
     val imagen: String,
     val nombre: String,
-    val plataforma: String
+    val plataforma: String,
+    val descripcion: String
 )

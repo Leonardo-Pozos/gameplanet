@@ -37,7 +37,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -67,6 +69,7 @@ fun DetalleGameScreen(paddingValues: PaddingValues, idGame: Int){
             desarrollador = "",
             plataforma = "",
             clasificacion = "",
+            descripcion = "",
             id = 0
         ))
     }
@@ -127,47 +130,79 @@ fun DetalleGameScreen(paddingValues: PaddingValues, idGame: Int){
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
-                Spacer(modifier = Modifier.height(20.dp))
-                Column(
-                    modifier = Modifier.padding(start = 15.dp),
-                    horizontalAlignment = Alignment.Start
-                ){
+                Spacer(modifier = Modifier.height(10.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(15.dp)
+                ) {
+                    // Nombre centrado en la parte superior
                     Text(
-                        text = "Desarrollador: ${game.desarrollador}",
-                        color = MaterialTheme.colorScheme.onSurface,
-                        fontSize = 20.sp
+                        text = game.nombre,
+                        fontSize = 24.sp,
+                        modifier = Modifier.align(Alignment.TopCenter),
+                        fontWeight = FontWeight.Bold
                     )
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Text(
-                        text = "Rated: ${game.clasificacion}",
-                        color = MaterialTheme.colorScheme.onSurface,
-                        fontSize = 20.sp
-                    )
-                    Spacer(modifier = Modifier.height(15.dp))
-                    Text(
-                        text = "Disponible en plataformas:",
-                        color = MaterialTheme.colorScheme.onSurface,
-                        fontSize = 20.sp
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Start
+
+                    // Contenido principal en la parte superior izquierda
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 50.dp), // Deja espacio para el nombre
+                        horizontalAlignment = Alignment.Start
                     ) {
-                        game.plataforma.split(", ").forEach { platform ->
-                            val iconRes = platformIcons[platform.trim()]
-                            if (iconRes != null) {
-                                Image(
-                                    painter = painterResource(id = iconRes),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .size(60.dp)
-                                )
-                                Spacer(modifier = Modifier.width(15.dp))
+                        Text(
+                            text = game.descripcion,
+                            fontSize = 18.sp,
+                        )
+                        Spacer(modifier = Modifier.height(30.dp))
+                        Text(
+                            text = "Desarrollador: ${game.desarrollador}",
+                            fontSize = 18.sp
+                        )
+                    }
+
+                    // Contenido en la parte inferior izquierda
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 15.dp, start = 15.dp)
+                            .align(Alignment.BottomStart),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Text(
+                            text = "Rated: ${game.clasificacion}",
+                            fontSize = 18.sp
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Text(
+                            text = "Disponible en plataformas:",
+                            fontSize = 18.sp
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Start
+                        ) {
+                            game.plataforma.split(", ").forEach { platform ->
+                                val iconRes = platformIcons[platform.trim()]
+                                if (iconRes != null) {
+                                    Image(
+                                        painter = painterResource(id = iconRes),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .size(40.dp)
+                                            .clip(CircleShape)
+                                    )
+                                    Spacer(modifier = Modifier.width(15.dp))
+                                }
                             }
                         }
                     }
                 }
+
+
             }
         }
     }
