@@ -205,6 +205,7 @@ fun LoginScreen(innerPadding: PaddingValues, navController: NavController){
                             username = email,
                             password = password
                         )
+                        Log.i("LOGIN", response.body()?.access_token.toString())
                         if(response.body()?.access_token != null){
                             withContext(Dispatchers.Main){
                                 sharedPreference.saveUserSharedPref(

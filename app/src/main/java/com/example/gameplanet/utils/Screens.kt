@@ -5,4 +5,5 @@ sealed class Screens (val route: String){
     data object Registro : Screens("registro")
     data object Login : Screens("login")
     data object DetalleGame : Screens("detalleGame")
+    data object ListaDeseo : Screens("listaDeseo")
 }
