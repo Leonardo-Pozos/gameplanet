@@ -1,8 +1,12 @@
 package com.example.gameplanet.services
 
+import com.example.gameplanet.models.AgregarALD
 import com.example.gameplanet.models.Game
 import com.example.gameplanet.models.ListaDeseo
+import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface GameService {
@@ -20,4 +24,7 @@ interface GameService {
 
     @GET("lista_de_deseados/{idUser}")
     suspend fun getListaDeseo(@Path("idUser") idUser: Int): List<ListaDeseo>
+
+    @POST("lista_de_deseados/")
+    suspend fun agregarAListaDeseo(@Body agregarALD: AgregarALD) : Response<ListaDeseo>
 }

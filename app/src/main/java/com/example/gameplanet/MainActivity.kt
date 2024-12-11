@@ -110,7 +110,7 @@ class MainActivity : ComponentActivity() {
                                 })
                             ){
                                 val idGame = it.arguments?.getInt("idGame") ?: 0
-                                DetalleGameScreen(innerPadding, idGame)
+                                DetalleGameScreen(innerPadding, idGame, navController)
                             }
                             composable(route = Screens.ListaDeseo.route){
                                 ListaDeDeseoScreen(innerPadding)
