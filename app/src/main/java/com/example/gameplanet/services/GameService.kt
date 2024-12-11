@@ -13,4 +13,8 @@ interface GameService {
 
     @GET("videojuegos/{clasificacion}")
     suspend fun getGameByClasificacion(@Path("clasificacion") clasificacion: String): List<Game>
+
+    @GET("videojuegos/{desarrollador}")
+    suspend fun getGameByDesarrollador(@Path("desarrollador") desarrollador: String): List<Game>
+
 }
