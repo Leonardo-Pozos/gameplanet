@@ -10,4 +10,7 @@ interface GameService {
 
     @GET("videojuegos/{id}")
     suspend fun getGameById(@Path("id") id: Int) : Game
+
+    @GET("videojuegos/{clasificacion}")
+    suspend fun getGameByClasificacion(@Path("clasificacion") clasificacion: String): List<Game>
 }
