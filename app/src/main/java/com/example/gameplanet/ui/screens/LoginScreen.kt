@@ -210,7 +210,8 @@ fun LoginScreen(innerPadding: PaddingValues, navController: NavController){
                             withContext(Dispatchers.Main){
                                 sharedPreference.saveUserSharedPref(
                                     userName = email,
-                                    isLogged = true
+                                    isLogged = true,
+                                    userId = response.body()?.user_id ?: 0
                                 )
                                 navController.navigate(Screens.Home.route){
                                     popUpTo(Screens.Home.route) { inclusive = true }

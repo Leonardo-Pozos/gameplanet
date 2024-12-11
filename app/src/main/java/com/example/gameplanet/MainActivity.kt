@@ -113,7 +113,7 @@ class MainActivity : ComponentActivity() {
                                 DetalleGameScreen(innerPadding, idGame)
                             }
                             composable(route = Screens.ListaDeseo.route){
-                                ListaDeDeseoScreen()
+                                ListaDeDeseoScreen(innerPadding)
                             }
                         }
                     }
