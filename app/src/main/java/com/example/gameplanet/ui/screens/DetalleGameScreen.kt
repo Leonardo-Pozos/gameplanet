@@ -1,5 +1,6 @@
 package com.example.gameplanet.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
@@ -36,22 +38,33 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.gameplanet.R
+import com.example.gameplanet.models.AgregarALD
 import com.example.gameplanet.models.Game
+import com.example.gameplanet.models.ListaDeseo
+import com.example.gameplanet.services.AuthService
 import com.example.gameplanet.services.GameService
+import com.example.gameplanet.utils.Screens
+import com.example.gameplanet.utils.SharedPreference
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Composable
-fun DetalleGameScreen(paddingValues: PaddingValues, idGame: Int){
+fun DetalleGameScreen(paddingValues: PaddingValues, idGame: Int, navController: NavController){
+    val sharedPref = SharedPreference(LocalContext.current)
+    val userId = sharedPref.getUserIdSharedPref()
     val platformIcons = mapOf(
         "Pc" to R.drawable.pc,
         "Xbox" to R.drawable.xbox,
@@ -160,6 +173,28 @@ fun DetalleGameScreen(paddingValues: PaddingValues, idGame: Int){
                             text = "Desarrollador: ${game.desarrollador}",
                             fontSize = 18.sp
                         )
+                        Spacer(modifier = Modifier.height(30.dp))
+                        Button(onClick = {
+                            scope.launch(Dispatchers.IO){
+                                val gameService = Retrofit.Builder()
+                                    .baseUrl("http://157.230.89.111:8000/")
+                                    .addConverterFactory(GsonConverterFactory.create())
+                                    .build()
+                                    .create(GameService::class.java)
+                                val listDe = AgregarALD(usuario_id = userId, videojuego_id = game.id)
+                                val response = gameService.agregarAListaDeseo(listDe)
+                                if(response.body()?.id != null){
+                                    withContext(Dispatchers.Main){
+                                        navController.navigate(Screens.ListaDeseo.route)
+                                    }
+                                }
+                            }
+                        }) {
+                            Text(
+                                text = "Agregar a la lista de deseos",
+                                fontSize = 18.sp
+                            )
+                        }
                     }
 
                     // Contenido en la parte inferior izquierda
