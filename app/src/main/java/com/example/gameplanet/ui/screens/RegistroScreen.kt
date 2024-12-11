@@ -190,10 +190,10 @@ fun RegistroScreen(innerPadding: PaddingValues, navController: NavController){
                     val response = authService.createUser(auth)
                     if(response.body()?.id != 0){
                         withContext(Dispatchers.Main){
-
                             sharedPreference.saveUserSharedPref(
                                 userName = response.body()?.username ?: "",
-                                isLogged = true
+                                isLogged = true,
+                                userId = response.body()?.id ?: 0
                             )
                             navController.navigate(Screens.Home.route){
                                 popUpTo(Screens.Home.route) { inclusive = true }

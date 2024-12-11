@@ -8,15 +8,20 @@ class SharedPreference(
     private val sharedPref = context.getSharedPreferences("myPref", Context.MODE_PRIVATE)
     fun saveUserSharedPref(
         userName: String,
-        isLogged : Boolean
+        isLogged : Boolean,
+        userId : Int
     ){
         val editor = sharedPref.edit()
         editor.putString("userName", userName)
         editor.putBoolean("isLogged",isLogged)
+        editor.putInt("userId", userId)
         editor.apply()
     }
     fun getUserNameSharedPref(): String? {
         return sharedPref.getString("userName", "")
+    }
+    fun getUserIdSharedPref(): Int{
+        return sharedPref.getInt("userId", 0)
     }
     fun getisLoggedSharedPref() : Boolean{
         return sharedPref.getBoolean("isLogged",false)
@@ -25,6 +30,7 @@ class SharedPreference(
         val editor = sharedPref.edit()
         editor.remove("userName")
         editor.remove("isLogged")
+        editor.remove("userId")
         editor.apply()
     }
 }
